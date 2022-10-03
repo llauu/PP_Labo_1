@@ -105,7 +105,7 @@ int CargarEquipo(sFigurita figuritas[], int cantFiguritas, sEquipo equipos[], in
 				StringUpper(bufferEquipo, strlen(bufferEquipo));
 
 				for(int i = 0; i < cantEquipos; i++){
-					if(strcasecmp(equipos[i].nombreEquipo, bufferEquipo) == 0){
+					if(strcasecmp(equipos[i].descripcion, bufferEquipo) == 0){
 						if(equipos[i].equipoLleno == VACIO){
 							jugadorIngresado = 1;
 							maxEquiposIngresados = 0;
@@ -125,7 +125,7 @@ int CargarEquipo(sFigurita figuritas[], int cantFiguritas, sEquipo equipos[], in
 				for(int i = 0; i < cantEquipos; i++){
 					if(equipos[i].estado == LIBRE){
 						maxEquiposIngresados = 0;
-						strcpy(equipos[i].nombreEquipo, bufferEquipo);
+						strcpy(equipos[i].descripcion, bufferEquipo);
 						idEquipo = equipos[i].idEquipo;
 						equipos[i].estado = OCUPADO;
 						break;
@@ -397,7 +397,7 @@ int OrdenarEquipos(sEquipo equipos[], int cantEquipos){
     			if(equipos[i].estado == OCUPADO && equipos[i+1].estado == OCUPADO){
         			contador++;
 
-        			if(strcmp(equipos[i].nombreEquipo, equipos[i+1].nombreEquipo) > 0){
+        			if(strcmp(equipos[i].descripcion, equipos[i+1].descripcion) > 0){
         				flagSwap = 1;
 
         				tmp = equipos[i];
@@ -425,7 +425,7 @@ int MostrarDatosOrdenadosPorEquipos(sFigurita figuritas[], int cantFiguritas, sE
 
 		for(int i = 0; i < cantEquipos; i++){
 			if(equipos[i].estado == OCUPADO){
-		        printf("\n[%s]\n", equipos[i].nombreEquipo);
+		        printf("\n[%s]\n", equipos[i].descripcion);
 
 		        for(int j = 0; j < cantFiguritas; j++){
 		            if(figuritas[j].estado == OCUPADO){

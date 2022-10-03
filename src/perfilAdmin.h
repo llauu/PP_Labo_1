@@ -10,7 +10,11 @@
 #define VACIO 0
 #define LLENO 1
 #define MAX_JUGADORES 11
-
+/*
+ * equipo (char[]) (Convertir este campo en la estructura eEquipo (id (int),
+   descripcion(char[]), directorTecnico(char[]))
+ *
+ * */
 typedef struct{
 	int dia;
 	int mes;
@@ -19,7 +23,8 @@ typedef struct{
 
 typedef struct{
 	int idEquipo;
-	char nombreEquipo[TAM_STRINGS];
+	char descripcion[TAM_STRINGS];
+	char directorTecnico[TAM_STRINGS];
 	int idAux;
 	int estado;
 	int equipoLleno;

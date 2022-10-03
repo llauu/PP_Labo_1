@@ -316,7 +316,7 @@ int MostrarFiguritasPegadas(sFigurita figuritas[], int cantFiguritas, sAlbum alb
 			if(album.idFigurita[i] != -1){
 				for(int j = 0; j < cantEquipos; j++){
 					if(figuritas[i].idEquipo == equipos[j].idEquipo){
-						printf("\n|ID: %2d | Jugador: %-20s | Equipo: %-14s | Posicion: %-15s|", album.idFigurita[i], figuritas[i].nombreJugador, equipos[j].nombreEquipo, figuritas[i].posicion);
+						printf("\n|ID: %2d | Jugador: %-20s | Equipo: %-14s | Posicion: %-15s|", album.idFigurita[i], figuritas[i].nombreJugador, equipos[j].descripcion, figuritas[i].posicion);
 					}
 				}
 			}
@@ -342,7 +342,7 @@ int MostrarRepetidas(sRepetida pilaRepetidas[], sFigurita figuritas[], int cantF
 				for(int j = 0; j < cantEquipos; j++){
 					if(figuritas[i].idEquipo == equipos[j].idEquipo){
 						hayRepetida = 1;
-						printf("\n|ID: %2d | Jugador: %-20s | Equipo: %-14s | Repetida: %2d veces |", pilaRepetidas[i].idFigurita, figuritas[i].nombreJugador, equipos[j].nombreEquipo, pilaRepetidas[i].vecesRepetida);
+						printf("\n|ID: %2d | Jugador: %-20s | Equipo: %-14s | Repetida: %2d veces |", pilaRepetidas[i].idFigurita, figuritas[i].nombreJugador, equipos[j].descripcion, pilaRepetidas[i].vecesRepetida);
 						break;
 					}
 				}
