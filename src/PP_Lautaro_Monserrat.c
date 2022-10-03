@@ -24,14 +24,15 @@ int main(void){
 
 	miAlbum.estado = VACIO;
 
+// DATOS HARDCODEADOS PARA TEST
 //	sEquipo equiposIngresados[CANT_EQUIPOS] = {
-//			{1, "Boca", 1, OCUPADO, VACIO},
-//			{2, "River", 2, OCUPADO, VACIO},
-//			{3, "Defensa", 3, OCUPADO, VACIO},
-//			{4, "Independiente", 4, OCUPADO, VACIO},
-//			{5, "Racing", 5, OCUPADO, VACIO},
+//			{1, "Boca", "Bianchi", 1, OCUPADO, VACIO},
+//			{2, "River", "Gallardo", 2, OCUPADO, VACIO},
+//			{3, "Defensa", "kuko", 3, OCUPADO, VACIO},
+//			{4, "Independiente", "masallanes", 4, OCUPADO, VACIO},
+//			{5, "Racing", "milito", 5, OCUPADO, VACIO},
 //	};
-
+//
 //	sFigurita bancoDeFiguritas[CANT_FIGURITAS] = {
 //	                {1,"miranda","mediocampista",1,1.7,70,2009,{14,4,1995}, OCUPADO},
 //	                {2,"ramiro","delantero",2,1.9,80,2008,{9,1,2003}, OCUPADO},
@@ -61,7 +62,7 @@ int main(void){
 	InicializarAuxiliar(equiposIngresados, CANT_EQUIPOS, auxEquipos);
 
 	do{
-		printf("\n         Menu principal\n"
+		printf("\n         [Menu principal]\n"
 				"\n1.Perfil Administrador\n2.Perfil Coleccionista\n3.Salir\n");
 		getInt(&opcion, "\nOpcion: ", "[ERROR] La opcion que ingreso no es correcta.", 1, 4);
 
@@ -70,7 +71,7 @@ int main(void){
 				PerfilAdministrador(bancoDeFiguritas, CANT_FIGURITAS, equiposIngresados, CANT_EQUIPOS, auxEquipos);
 				break;
 
-			case 2: // coleccionista
+			case 2:
 				perfilColeccionista(miAlbum, bancoDeFiguritas, CANT_FIGURITAS, pilaRepetidas, equiposIngresados, CANT_EQUIPOS);
 				break;
 

@@ -65,12 +65,12 @@ sFigurita AltaFigurita(sFigurita figuritas[], int cantFiguritas, sEquipo equipos
 
 	figurita.idEquipo = CargarEquipo(figuritas, cantFiguritas, equipos, cantEquipos);
 
-//	getFloat(&figurita.altura, "\nIngrese la altura del jugador (en metros): ", "\n[ERROR] Altura no valida.\n", 0, 3);
-//	getFloat(&figurita.peso, "\nIngrese el peso del jugador (en kilos): ", "\n[ERROR] Peso no valido.\n", 0, 150);
-//	getInt(&figurita.anioDeIngreso, "\nIngrese el anio de ingreso a la seleccion: ", "\n[ERROR] Anio no valido.\n", 1, 2500);
-//	getInt(&figurita.fechaNacimiento.dia, "\nIngrese el dia de nacimiento del jugador: ", "\n[ERROR] Dia no valido.\n", 1, 31);
-//	getInt(&figurita.fechaNacimiento.mes, "\nIngrese el mes de nacimiento del jugador: ", "\n[ERROR] Mes no valido.\n", 1, 12);
-//	getInt(&figurita.fechaNacimiento.anio, "\nIngrese el anio de nacimiento del jugador: ", "\n[ERROR] Anio no valido.\n", 1, 2022);
+	getFloat(&figurita.altura, "\nIngrese la altura del jugador (en metros): ", "\n[ERROR] Altura no valida.\n", 0, 3);
+	getFloat(&figurita.peso, "\nIngrese el peso del jugador (en kilos): ", "\n[ERROR] Peso no valido.\n", 0, 150);
+	getInt(&figurita.anioDeIngreso, "\nIngrese el anio de ingreso al equipo: ", "\n[ERROR] Anio no valido.\n", 1, 2500);
+	getInt(&figurita.fechaNacimiento.dia, "\nIngrese el dia de nacimiento del jugador: ", "\n[ERROR] Dia no valido.\n", 1, 31);
+	getInt(&figurita.fechaNacimiento.mes, "\nIngrese el mes de nacimiento del jugador: ", "\n[ERROR] Mes no valido.\n", 1, 12);
+	getInt(&figurita.fechaNacimiento.anio, "\nIngrese el anio de nacimiento del jugador: ", "\n[ERROR] Anio no valido.\n", 1, 2023);
 
 	figurita.estado = OCUPADO;
 
@@ -90,6 +90,7 @@ int ObtenerIDIncremental(void){
 int CargarEquipo(sFigurita figuritas[], int cantFiguritas, sEquipo equipos[], int cantEquipos){
 	int idEquipo;
 	char bufferEquipo[25];
+	char bufferDT[25];
 	int jugadorIngresado;
 	int maxEquiposIngresados;
 	int maxAlcanzado;
@@ -105,7 +106,7 @@ int CargarEquipo(sFigurita figuritas[], int cantFiguritas, sEquipo equipos[], in
 				StringUpper(bufferEquipo, strlen(bufferEquipo));
 
 				for(int i = 0; i < cantEquipos; i++){
-					if(strcasecmp(equipos[i].descripcion, bufferEquipo) == 0){
+					if(strcasecmp(equipos[i].descripcion, bufferEquipo) == 0){// SI EL EQUIPO YA EXISTE ENTRA ACA
 						if(equipos[i].equipoLleno == VACIO){
 							jugadorIngresado = 1;
 							maxEquiposIngresados = 0;
@@ -122,8 +123,12 @@ int CargarEquipo(sFigurita figuritas[], int cantFiguritas, sEquipo equipos[], in
 			}while(maxAlcanzado == 1);
 
 			if(jugadorIngresado == 0){
-				for(int i = 0; i < cantEquipos; i++){
+				for(int i = 0; i < cantEquipos; i++){ // si el equipo todavia no se ingreso, entra aca
 					if(equipos[i].estado == LIBRE){
+						getString(bufferDT, 25, "\nIngrese el director tecnico del equipo: ", "\n[ERROR] Director tecnico no valido.\n");
+						StringUpper(bufferDT, strlen(bufferDT));
+						strcpy(equipos[i].directorTecnico, bufferDT);
+
 						maxEquiposIngresados = 0;
 						strcpy(equipos[i].descripcion, bufferEquipo);
 						idEquipo = equipos[i].idEquipo;
@@ -221,6 +226,7 @@ int InicializarEquipos(sEquipo equipos[], int cantEquipos){
 		asignarIDs++;
 		equipos[i].estado = LIBRE;
 		equipos[i].idEquipo = asignarIDs;
+		strcpy(equipos[i].descripcion, "");
 	}
 
 	retorno = 0;
@@ -425,7 +431,7 @@ int MostrarDatosOrdenadosPorEquipos(sFigurita figuritas[], int cantFiguritas, sE
 
 		for(int i = 0; i < cantEquipos; i++){
 			if(equipos[i].estado == OCUPADO){
-		        printf("\n[%s]\n", equipos[i].descripcion);
+		        printf("\n[%s | DT: %s]\n", equipos[i].descripcion, equipos[i].directorTecnico);
 
 		        for(int j = 0; j < cantFiguritas; j++){
 		            if(figuritas[j].estado == OCUPADO){

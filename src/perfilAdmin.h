@@ -4,17 +4,14 @@
 
 #define LIBRE 0
 #define OCUPADO 1
-#define CANT_FIGURITAS 22 //55 todo cambiar
+#define CANT_FIGURITAS 55
 #define CANT_EQUIPOS 5
 #define TAM_STRINGS 25
 #define VACIO 0
 #define LLENO 1
 #define MAX_JUGADORES 11
-/*
- * equipo (char[]) (Convertir este campo en la estructura eEquipo (id (int),
-   descripcion(char[]), directorTecnico(char[]))
- *
- * */
+
+
 typedef struct{
 	int dia;
 	int mes;

@@ -1,6 +1,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 #include "mylib.h"
 #include "perfilColeccionista.h"
@@ -86,8 +87,11 @@ int GenerarNumeroRandom(int min, int max){
 sAlbum ComprarPaquete(sAlbum album, sRepetida pilaRepetidas[], int* pContadorFiguritas, sFigurita figuritas[], int cantFiguritas){
 	srand(time(NULL));
 	int paquete[FIGURITAS_POR_PAQUETE];
+	int frecuenciaFigusDoradas;
 	int contadorFiguritas;
 	int figuritaDorada;
+
+	frecuenciaFigusDoradas = 50; // cada 50 figuritas sale una dorada
 	figuritaDorada = -1;
 
 	contadorFiguritas = *pContadorFiguritas;
@@ -97,7 +101,7 @@ sAlbum ComprarPaquete(sAlbum album, sRepetida pilaRepetidas[], int* pContadorFig
 	for(int i = 0; i < FIGURITAS_POR_PAQUETE; i++){
 		paquete[i] = GenerarNumeroRandom(1, CANT_FIGURITAS);
 
-		if(contadorFiguritas == 50){ // todo cada cuantas figuritas toca una dorada
+		if(contadorFiguritas == frecuenciaFigusDoradas){
 			figuritaDorada = paquete[i];
 			printf("\nTe toco una figurita dorada! Su ID es el %d", figuritaDorada);
 
@@ -188,7 +192,7 @@ sAlbum IntercambiarFiguritas(sFigurita figuritas[], int cantFiguritas, sRepetida
 
 	do{
 		MostrarRepetidas(pilaRepetidas, figuritas, cantFiguritas, equipos, cantEquipos);
-		getInt(&figuritaEntregada, "\nIngrese la figurita que va a entregar: ", "[ERROR] La opcion que ingreso no es correcta.", 1, 55);
+		getInt(&figuritaEntregada, "\n\nIngrese la figurita que va a entregar: ", "[ERROR] La opcion que ingreso no es correcta.", 1, 55);
 
 		for(int i = 0; i < cantFiguritas; i++){
 			if(figuritaEntregada == pilaRepetidas[i].idFigurita && pilaRepetidas[i].vecesRepetida > 0){
@@ -254,8 +258,8 @@ int Informes(sFigurita figuritas[], int cantFiguritas, sAlbum album, sEquipo equ
 		do{
 			printf("\n\n[Informes]\n 1.Listado de figuritas pegadas\n 2.Listado de figuritas repetidas\n 3.Listado de figuritas doradas que estan pegadas en el album\n"
 					" 4.Cuantos sobres tuvo que comprar el coleccionista para llenar el album\n 5.Cuanto dinero lleva gastado el coleccionista\n"
-					" 6.Cuanto dinero gasto el coleccionista para completar el album\n 7.Salir");
-			getInt(&opcion, "\n\nOpcion: ", "[ERROR] La opcion que ingreso no es correcta.", 1, 7);
+					" 6.Cuanto dinero gasto el coleccionista para completar el album\n 7.Seleccionar un equipo y listar todas las figuritas que esten pegadas\n 8.Salir");
+			getInt(&opcion, "\n\nOpcion: ", "[ERROR] La opcion que ingreso no es correcta.", 1, 8);
 
 			switch(opcion){
 				case 1:// Listado de figuritas pegadas
@@ -294,11 +298,15 @@ int Informes(sFigurita figuritas[], int cantFiguritas, sAlbum album, sEquipo equ
 
 					break;
 
-				case 7:
+				case 7: // Seleccionar un equipo y listar todas las figuritas que esten pegadas.
+					MostrarFiguritasPorEquipo(equipos, cantEquipos, album, figuritas, cantFiguritas);
+					break;
+
+				case 8:
 					printf("Volviendo al menu...\n");
 					break;
 			}
-		}while(opcion != 7);
+		}while(opcion != 8);
 
 		retorno = 0;
 	}
@@ -308,24 +316,45 @@ int Informes(sFigurita figuritas[], int cantFiguritas, sAlbum album, sEquipo equ
 
 int MostrarFiguritasPegadas(sFigurita figuritas[], int cantFiguritas, sAlbum album, sEquipo equipos[], int cantEquipos){
 	int retorno;
+	int hayPegada;
+
 	retorno = -1;
+	hayPegada = 0;
 
 	if(figuritas != NULL && cantFiguritas > 0 && equipos != NULL && cantEquipos > 0){
 		printf("\n[Figuritas pegadas]");
 		for(int i = 0; i < cantFiguritas; i++){
 			if(album.idFigurita[i] != -1){
-				for(int j = 0; j < cantEquipos; j++){
-					if(figuritas[i].idEquipo == equipos[j].idEquipo){
-						printf("\n|ID: %2d | Jugador: %-20s | Equipo: %-14s | Posicion: %-15s|", album.idFigurita[i], figuritas[i].nombreJugador, equipos[j].descripcion, figuritas[i].posicion);
-					}
-				}
+//				for(int j = 0; j < cantEquipos; j++){ FUNCIONA
+//					if(figuritas[i].idEquipo == equipos[j].idEquipo){
+//						printf("\n|ID: %2d | Jugador: %-20s | Equipo: %-14s | Posicion: %-15s|", album.idFigurita[i], figuritas[i].nombreJugador, equipos[j].descripcion, figuritas[i].posicion);
+//					}
+//				}
+
+				// TEST
+				hayPegada = 1;
+				MostrarDatosJugador(figuritas, album, equipos, cantEquipos, i);
 			}
+		}
+
+		if(hayPegada == 0){
+			printf("\nNo tenes ninguna figurita pegada.");
 		}
 
 		retorno = 0;
 	}
 
 	return retorno;
+}
+
+int MostrarDatosJugador(sFigurita figuritas[], sAlbum album, sEquipo equipos[], int cantEquipos, int posicionFiguritas){
+	for(int j = 0; j < cantEquipos; j++){
+		if(figuritas[posicionFiguritas].idEquipo == equipos[j].idEquipo){
+			printf("\n|ID: %2d | Jugador: %-20s | Equipo: %-14s | Posicion: %-15s|", album.idFigurita[posicionFiguritas], figuritas[posicionFiguritas].nombreJugador, equipos[j].descripcion, figuritas[posicionFiguritas].posicion);
+		}
+	}
+
+	return 0;
 }
 
 int MostrarRepetidas(sRepetida pilaRepetidas[], sFigurita figuritas[], int cantFiguritas, sEquipo equipos[], int cantEquipos){
@@ -400,7 +429,58 @@ void MostrarDineroGastadoParaLlenarlo(float dineroGastadoHastaAlbumLleno){
 	printf("\nEl coleccionista gasto $%.2f para completar el album.", dineroGastadoHastaAlbumLleno);
 }
 
+int MostrarFiguritasPorEquipo(sEquipo equipos[], int cantEquipos, sAlbum album, sFigurita figuritas[], int cantFiguritas){
+	int retorno;
+	retorno = -1;
 
+	if(equipos != NULL && cantEquipos > 0){
+		char bufferEquipo[25];
+		int existeEquipo;
+		int hayFigurita;
+
+		do{
+			existeEquipo = 0;
+			hayFigurita = 0;
+
+			printf("\nEquipos disponibles: \n");
+			for(int i = 0; i < cantEquipos; i++){
+				if(strcmp(equipos[i].descripcion, "") != 0){
+					printf(" -%s\n", equipos[i].descripcion); // ME LISTA LOS EQUIPOS CARGADOS
+				}
+			}
+
+			getString(bufferEquipo, 25, "\nIngrese el equipo el cual quiere ver sus jugadores: ", "\n[ERROR] Equipo no valido.\n");
+
+			for(int i = 0; i < cantEquipos; i++){
+				if(strcasecmp(equipos[i].descripcion, bufferEquipo) == 0){ // SI EL EQUIPO EXISTE ENTRA ACA
+					existeEquipo = 1;
+					printf("\n[Figuritas pegadas en %s]", equipos[i].descripcion);
+
+					for(int j = 0; j < cantFiguritas; j++){
+						if(album.idFigurita[j] != -1 && figuritas[j].idEquipo == equipos[i].idEquipo){
+							hayFigurita = 1;
+							MostrarDatosJugador(figuritas, album, equipos, cantEquipos, j);
+						}
+					}
+					if(hayFigurita == 0){
+						printf("\nNo tenes figuritas de %s pegadas.", equipos[i].descripcion);
+					}
+
+					break;
+				}
+			}
+
+			if(existeEquipo == 0){
+				printf("[ERROR] El equipo que ingresaste no existe.\n");
+			}
+
+		}while(existeEquipo == 0);
+
+		retorno = 0;
+	}
+
+	return retorno;
+}
 
 
 
